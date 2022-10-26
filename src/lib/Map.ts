@@ -1,11 +1,13 @@
 import L from 'leaflet';
+
+import {generateWarningColor} from "./utils";
+import {getQuakeWithDangerColor} from "../generator/marker";
+import {getPopupComponent} from "../generator/popup";
+
 import {DEFAULT_INITIAL_VIEW, MAP_TYPES} from '../static';
 
 import type {Map, Marker} from 'leaflet';
 import type {Feature} from 'geojson';
-import {generateWarningColor} from "./utils";
-import {getQuakeWithDangerColor} from "../generator/marker";
-
 
 let currentMapType, tileLayer, markerLayer;
 
@@ -31,6 +33,7 @@ function getMarkerLayer(map: Map, locs: Feature[]) : void {
     markerLayer = L.layerGroup()
     locs.forEach((location: Feature) => {
         let marker = createMarker(location);
+        bindOnClickFunction(marker, location);
         markerLayer.addLayer(marker);
     })
     markerLayer.addTo(map);
@@ -45,6 +48,23 @@ function createMarker(loc: Feature): Marker {
     return L.marker([loc.geometry['coordinates'][1], loc.geometry['coordinates'][0]], {icon});
 }
 
+
+
+function bindOnClickFunction(marker: Marker, location: Feature) : void {
+    bindPopup(marker, (m) => {
+        return getPopupComponent(m, location)
+    });
+}
+
+
+function bindPopup(marker, createFn) {
+    let popupComponent;
+    marker.bindPopup(() => {
+        let container = L.DomUtil.create('div');
+        popupComponent = createFn(container);
+        return container;
+    });
+}
 
 
 
