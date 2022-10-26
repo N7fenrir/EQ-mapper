@@ -8,6 +8,9 @@ import {DEFAULT_INITIAL_VIEW, MAP_TYPES} from '../static';
 
 import type {Map, Marker} from 'leaflet';
 import type {Feature} from 'geojson';
+import {makeToolTip} from "../generator/toolbar";
+import {makeScale} from "../generator/scale";
+
 
 let currentMapType, tileLayer, markerLayer;
 
@@ -18,6 +21,8 @@ function getMap(container: HTMLDivElement, type: number): Map {
         preferCanvas: true,
     }).setView(DEFAULT_INITIAL_VIEW, 2.5);
     setLayer(map, type)
+    addScale(map);
+    addToolTip(map);
     L.control.scale().addTo(map);
     return map;
 }
@@ -48,7 +53,21 @@ function createMarker(loc: Feature): Marker {
     return L.marker([loc.geometry['coordinates'][1], loc.geometry['coordinates'][0]], {icon});
 }
 
+function addToolTip(map: Map): void {
+    let toolbar = L.control({ position: 'topright' });
+    toolbar.onAdd = () => {
+        return makeToolTip(L.DomUtil, {toggleMap: ()=> {setLayer(map, currentMapType === 1? 2 : 1 )}, update: ()=> {}});
+    }
+    toolbar.addTo(map)
+}
 
+function addScale(map: Map): void {
+    const legendLayer = L.control({position: "bottomright"});
+    legendLayer.onAdd = function () {
+        return makeScale(L.DomUtil)
+    };
+    legendLayer.addTo(map);
+}
 
 function bindOnClickFunction(marker: Marker, location: Feature) : void {
     bindPopup(marker, (m) => {
