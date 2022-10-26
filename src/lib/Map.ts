@@ -64,6 +64,16 @@ function bindPopup(marker, createFn) {
         popupComponent = createFn(container);
         return container;
     });
+
+    marker.on('popupclose', () => {
+        if(popupComponent) {
+            let old = popupComponent;
+            popupComponent = null;
+            setTimeout(() => {
+                old.$destroy();
+            }, 500);
+        }
+    });
 }
 
 
