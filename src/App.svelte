@@ -1,8 +1,22 @@
 <script lang="ts">
   import Map from "./components/Map.svelte"
+  import {EQ_DATA_24_HOURS, START_END_DATE} from "./components/stores";
+  import {getDataFromTimeDate, getLast24HoursFromNow, setDate} from "./lib/USGS";
 
-  let data = true;
+  let data = false;
 
+  $START_END_DATE = getLast24HoursFromNow();
+
+  $: onChange($START_END_DATE);
+
+  async function onChange(args) {
+    if(args.length > 0) {
+      data = false;
+      setDate($START_END_DATE)
+      $EQ_DATA_24_HOURS = await getDataFromTimeDate();
+      data = true;
+    }
+  }
 
 </script>
 
@@ -20,7 +34,6 @@
     </div>
   {/if}
 </div>
-
 
 
 <style>

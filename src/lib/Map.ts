@@ -1,10 +1,13 @@
 import L from 'leaflet';
 import {DEFAULT_INITIAL_VIEW, MAP_TYPES} from '../static';
 
-import type {Map} from 'leaflet';
+import type {Map, Marker} from 'leaflet';
+import type {Feature} from 'geojson';
+import {generateWarningColor} from "./utils";
+import {getQuakeWithDangerColor} from "../generator/marker";
 
 
-let currentMapType, tileLayer;
+let currentMapType, tileLayer, markerLayer;
 
 function getMap(container: HTMLDivElement, type: number): Map {
     let map = L.map(container, {
@@ -24,4 +27,25 @@ function setLayer(map: Map, type: number) {
     tileLayer.addTo(map);
 }
 
-export  { getMap }
+function getMarkerLayer(map: Map, locs: Feature[]) : void {
+    markerLayer = L.layerGroup()
+    locs.forEach((location: Feature) => {
+        let marker = createMarker(location);
+        markerLayer.addLayer(marker);
+    })
+    markerLayer.addTo(map);
+}
+
+
+function createMarker(loc: Feature): Marker {
+    let icon = L.divIcon({
+        html: `<div>${getQuakeWithDangerColor(generateWarningColor(loc.properties.mag))}</div>`,
+        className: 'x'
+    });
+    return L.marker([loc.geometry['coordinates'][1], loc.geometry['coordinates'][0]], {icon});
+}
+
+
+
+
+export  { getMap, getMarkerLayer }

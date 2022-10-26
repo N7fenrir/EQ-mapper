@@ -1,11 +1,12 @@
 <script lang="ts">
-    import {CURRENT_MAP_TYPE} from "./stores";
-    import {getMap} from "../lib/Map.js";
+    import {CURRENT_MAP_TYPE, EQ_DATA_24_HOURS} from "./stores";
+    import {getMap, getMarkerLayer} from "../lib/Map.js";
 
     let map;
 
     function mapAction(container: HTMLDivElement) {
         map = getMap(container, $CURRENT_MAP_TYPE);
+        getMarkerLayer(map, $EQ_DATA_24_HOURS);
         return {
             destroy: () => {
                 map.remove();
