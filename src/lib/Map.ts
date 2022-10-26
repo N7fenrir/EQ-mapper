@@ -3,6 +3,8 @@ import {DEFAULT_INITIAL_VIEW, MAP_TYPES} from '../static';
 
 import type {Map, Marker} from 'leaflet';
 import type {Feature} from 'geojson';
+import {generateWarningColor} from "./utils";
+import {getQuakeWithDangerColor} from "../generator/marker";
 
 
 let currentMapType, tileLayer, markerLayer;
@@ -37,7 +39,7 @@ function getMarkerLayer(map: Map, locs: Feature[]) : void {
 
 function createMarker(loc: Feature): Marker {
     let icon = L.divIcon({
-        html: `<div>EQ</div>`,
+        html: `<div>${getQuakeWithDangerColor(generateWarningColor(loc.properties.mag))}</div>`,
         className: 'x'
     });
     return L.marker([loc.geometry['coordinates'][1], loc.geometry['coordinates'][0]], {icon});
@@ -46,4 +48,4 @@ function createMarker(loc: Feature): Marker {
 
 
 
-export  { getMap, getMarkerLayer}
+export  { getMap, getMarkerLayer }

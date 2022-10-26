@@ -4,5 +4,18 @@ const MAP_TYPES: Record<number, any[]> = {
 }
 const DEFAULT_INITIAL_VIEW: number[] = [39.8283, -98.5795];
 const URL_24_HOUR_EQ_LIST = `https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=$startDate$&endtime=$endDate$&minmagnitude=2`;
+const MAGNITUDE_COLORS = [
+    "#FFFF99",
+    "#FFFF00",
+    "#FFB266",
+    "#FF9933",
+    "#FF8000",
+    "#CC6600",
+    "#CC0000",
+    "#990000",
+    "#660000",
+    "#330000",
+];
 
-export {MAP_TYPES, DEFAULT_INITIAL_VIEW, URL_24_HOUR_EQ_LIST };
+
+export {MAP_TYPES, DEFAULT_INITIAL_VIEW, URL_24_HOUR_EQ_LIST, MAGNITUDE_COLORS};
