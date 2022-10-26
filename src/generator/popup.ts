@@ -1,4 +1,4 @@
-import MapPopup from "../MapPopup.svelte";
+import MapPopup from "../components/MapPopup.svelte";
 import type { Marker } from 'leaflet';
 import type {Feature} from "geojson";
 
