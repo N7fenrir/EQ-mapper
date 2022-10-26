@@ -1,7 +1,7 @@
 <script lang="ts">
   import Map from "./components/Map.svelte"
 
-  let data = false;
+  let data = true;
 
 
 </script>
