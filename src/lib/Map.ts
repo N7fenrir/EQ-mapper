@@ -6,6 +6,7 @@ import type {Feature} from 'geojson';
 import {generateWarningColor} from "./utils";
 import {getQuakeWithDangerColor} from "../generator/marker";
 import {makeToolTip} from "../generator/toolbar";
+import {makeScale} from "../generator/scale";
 
 
 let currentMapType, tileLayer, markerLayer;
@@ -17,6 +18,7 @@ function getMap(container: HTMLDivElement, type: number): Map {
         preferCanvas: true,
     }).setView(DEFAULT_INITIAL_VIEW, 2.5);
     setLayer(map, type)
+    addScale(map);
     addToolTip(map);
     L.control.scale().addTo(map);
     return map;
@@ -38,7 +40,6 @@ function getMarkerLayer(map: Map, locs: Feature[]) : void {
     markerLayer.addTo(map);
 }
 
-
 function createMarker(loc: Feature): Marker {
     let icon = L.divIcon({
         html: `<div>${getQuakeWithDangerColor(generateWarningColor(loc.properties.mag))}</div>`,
@@ -55,6 +56,12 @@ function addToolTip(map: Map): void {
     toolbar.addTo(map)
 }
 
-
+function addScale(map: Map): void {
+    const legendLayer = L.control({position: "bottomright"});
+    legendLayer.onAdd = function () {
+        return makeScale(L.DomUtil)
+    };
+    legendLayer.addTo(map);
+}
 
 export  { getMap, getMarkerLayer }
