@@ -24,9 +24,9 @@
 
 <div class="buttons-container">
 
-    <button type="button" class="single-click" on:click={() => {$CURRENT_MAP_TYPE ===  "1"? $CURRENT_MAP_TYPE = "2" : $CURRENT_MAP_TYPE = "1"; dispatch('toggle-map')}} title="Reset View">
+    <button type="button" class="single-click" on:click={() => {$CURRENT_MAP_TYPE ===  1? $CURRENT_MAP_TYPE = 2 : $CURRENT_MAP_TYPE = 1; dispatch('toggle-map')}} title="Reset View">
 
-        {#if $CURRENT_MAP_TYPE === "2"}
+        {#if $CURRENT_MAP_TYPE === 2}
             <svg width="48px" height="48px" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
                  aria-hidden="true" role="img"
                  preserveAspectRatio="xMidYMid meet">
